@@ -274,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               fontWeight: FontWeight.w500,
                             ),
                             decoration: InputDecoration(
-                              hintText: 'Enter index number',
+                              hintText: 'e.g., 224169D or 224169',
                               hintStyle: TextStyle(
                                 color: Colors.white.withOpacity(0.3),
                               ),

@@ -8,13 +8,26 @@ class WeatherService {
   static const String _timestampKey = 'cached_timestamp';
 
   Map<String, double> computeCoords(String index) {
-    final cleanIndex = index.replaceAll(RegExp(r'[^0-9]'), '');
+    // Remove any whitespace
+    final trimmedIndex = index.trim();
     
-    if (cleanIndex.length < 4) {
-      throw FormatException('Index must contain at least 4 digits');
+    // Extract only digits
+    final cleanIndex = trimmedIndex.replaceAll(RegExp(r'[^0-9]'), '');
+    
+    // Validate: must have exactly 6 digits
+    if (cleanIndex.length != 6) {
+      throw FormatException('Index must contain exactly 6 digits (e.g., 224169 or 224169D)');
+    }
+    
+    // Validate: original index format (6 digits + optional character)
+    final validFormat = RegExp(r'^\d{6}[A-Za-z]?$');
+    if (!validFormat.hasMatch(trimmedIndex)) {
+      throw FormatException('Index format must be 6 digits with optional letter (e.g., 224169D or 224169)');
     }
 
+    // Use first 2 digits for latitude calculation
     final firstTwo = int.parse(cleanIndex.substring(0, 2));
+    // Use next 2 digits for longitude calculation
     final nextTwo = int.parse(cleanIndex.substring(2, 4));
 
     final lat = 5 + (firstTwo / 10.0);
